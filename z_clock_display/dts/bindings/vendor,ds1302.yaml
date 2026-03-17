@@ -1,0 +1,19 @@
+description: driver para RTC DS1302
+
+compatible: "vendor,ds1302"
+
+properties:
+  ce-gpios:
+    type: phandle-array
+    required: true
+    description: chip enable pin
+
+  sclk-gpios:
+    type: phandle-array
+    required: true
+    description: serial clock pin
+
+  io-gpios:
+    type: phandle-array
+    required: true
+    description: data pin

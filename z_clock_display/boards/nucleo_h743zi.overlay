@@ -1,0 +1,44 @@
+/* 
+ * Overlay para RTC ds1302. Pines de conexion GPIOG 0, 1, 2 
+ * Display ssd1306. Pines de conexion GPIOB 6 (scl), 7 (sda)
+ */
+#include <zephyr/dt-bindings/i2c/i2c.h>
+#include <zephyr/dt-bindings/gpio/gpio.h>
+
+/ {
+    ds1302_0: ds1302 {
+        compatible = "vendor,ds1302";
+        ce-gpios   = <&gpiog 0 GPIO_ACTIVE_HIGH>;
+        sclk-gpios = <&gpiog 1 GPIO_ACTIVE_HIGH>;
+        io-gpios   = <&gpiog 2 GPIO_ACTIVE_HIGH>;
+        status = "okay";
+    };
+};
+
+/* Configuracion de display i2c */
+&i2c1 {
+    pinctrl-0 = <&i2c1_scl_pb6 &i2c1_sda_pb7>;
+    pinctrl-names = "default";
+    clock-frequency = <I2C_BITRATE_FAST>; /* 400kHz */
+    status = "okay";
+
+    ssd1306: ssd1306@3c {
+        compatible = "solomon,ssd1306";
+        reg = <0x3c>;
+        segment-offset = <0>;
+        page-offset = <0>;
+        display-offset = <0>;
+        multiplex-ratio = <63>;
+        prechargep = <0x22>;
+        width = <128>; height = <64>;
+        segment-remap;
+        com-invdir;
+    };
+
+};
+
+/* Configuracion uart3 */
+&usart3 {
+    current-speed = <115200>;
+    status = "okay";
+};
